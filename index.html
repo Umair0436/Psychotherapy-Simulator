@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psychotherapy Training Simulator</title>
+    <link rel="stylesheet" href="styles.css">
+    </head>
+<body>
+    <div class="simulator-wrapper">
+        <main class="container">
+            <section class="page active" id="profile-page" role="region" aria-labelledby="profile-heading">
+                <header class="page-header">
+                    <h1 id="profile-heading">Patient Profile Setup</h1>
+                    <p class="subtitle">Configure the AI patient for your training session.</p>
+                </header>
+                
+                <form id="profile-form" class="setup-form" aria-live="polite">
+                    
+                    <div class="form-group">
+                        <label for="age">Patient Age</label>
+                        <input type="number" id="age" name="age" min="18" max="100" placeholder="18 - 100" aria-describedby="age-error" required>
+                        <p class="input-error" id="age-error" aria-hidden="true">Please enter a valid age (18-100).</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="symptoms">Primary Symptoms</label>
+                        <select id="symptoms" name="symptoms" aria-describedby="symptoms-error" required>
+                            <option value="" disabled selected>Select primary symptoms...</option>
+                            <option value="anxiety">Anxiety Disorders</option>
+                            <option value="depression">Depression</option>
+                            <option value="trauma">Trauma/PTSD</option>
+                            <option value="addiction">Addiction Issues</option>
+                            <option value="relationships">Relationship Problems</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <p class="input-error" id="symptoms-error" aria-hidden="true">Please select symptoms.</p>
+                    </div>
+
+                    <div class="quick-profile-section" id="markdown-section">
+                        <h4 class="section-title">Quick Symptom Profiles:</h4>
+                        <div class="profile-buttons-group">
+                            <button type="button" class="btn btn-tag" data-profile="anxiety">Generalized Anxiety</button>
+                            <button type="button" class="btn btn-tag" data-profile="depression">Major Depression</button>
+                            <button type="button" class="btn btn-tag" data-profile="trauma">PTSD</button>
+                            <button type="button" class="btn btn-tag" data-profile="social">Social Anxiety</button>
+                            <button type="button" class="btn btn-tag" data-profile="panic">Panic Disorder</button>
+                            <button type="button" class="btn btn-tag" data-profile="bipolar">Bipolar Disorder</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="behavior">Patient Behavior</label>
+                        <input type="text" id="behavior" name="behavior" placeholder="e.g., guarded, open, anxious, withdrawn" aria-describedby="behavior-error" required>
+                        <p class="input-error" id="behavior-error" aria-hidden="true">Please describe the patient's behavior.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tone">Communication Tone</label>
+                        <input type="text" id="tone" name="tone" placeholder="e.g., flat, hopeful, irritable, defensive" aria-describedby="tone-error" required>
+                        <p class="input-error" id="tone-error" aria-hidden="true">Please describe the communication tone.</p>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="start-session-btn" aria-label="Start Training Session">
+                            Start Training Session
+                        </button>
+                        <p class="form-status-message" id="form-status" role="status" aria-live="polite">
+                            Please fill all fields to continue.
+                        </p>
+                    </div>
+                </form>
+            </section>
+
+            <section class="page" id="chat-page" role="main" aria-labelledby="session-heading">
+                <header class="page-header">
+                    <h1 id="session-heading">Therapy Session</h1>
+                    <p class="subtitle">Practice your psychotherapy skills.</p>
+                    
+                    <div class="session-progress-area">
+                        <p class="progress-label">Session Progress</p>
+                        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="chat-container" id="chat-messages" role="log" aria-live="polite">
+                    </div>
+
+                <div class="chat-input-group">
+                    <textarea class="chat-input" id="student-input" placeholder="Type your response as a therapist..." rows="1" aria-label="Therapist Response Input"></textarea>
+                    <button class="btn btn-icon send-btn" id="send-btn" aria-label="Send Message">
+                        <span>➤</span>
+                    </button>
+                </div>
+
+                <div class="session-actions">
+                    <button class="btn btn-secondary" id="end-session-btn">End Session & Get Feedback</button>
+                </div>
+            </section>
+
+            <section class="page" id="feedback-page" role="region" aria-labelledby="feedback-heading">
+                <header class="page-header">
+                    <h1 id="feedback-heading">Performance Feedback</h1>
+                    <p class="subtitle">Review your therapy session performance.</p>
+                </header>
+
+                <div class="feedback-content">
+                    <article class="feedback-section">
+                        <h3><span class="icon">📊</span> Session Summary</h3>
+                        <div id="session-summary" class="feedback-body">
+                            </div>
+                    </article>
+
+                    <article class="feedback-section">
+                        <h3><span class="icon">✅</span> Strengths Identified</h3>
+                        <div id="strengths-feedback" class="feedback-body">
+                            </div>
+                    </article>
+
+                    <article class="feedback-section">
+                        <h3><span class="icon">💡</span> Areas for Improvement</h3>
+                        <div id="improvement-feedback" class="feedback-body">
+                            </div>
+                    </article>
+
+                    <article class="feedback-section">
+                        <h3><span class="icon">🎯</span> Professional Recommendations</h3>
+                        <div id="recommendations-feedback" class="feedback-body">
+                            </div>
+                    </article>
+                </div>
+
+                <footer class="feedback-actions">
+                    <button class="btn btn-primary" id="new-session-btn">Start New Session</button>
+                    <button class="btn btn-secondary" id="download-report-btn">Download Report</button>
+                </footer>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
