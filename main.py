@@ -9,7 +9,7 @@ load_dotenv()
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.0-flash",
     temperature=0.9,          # More creative, less repetitive
-    max_output_tokens=300,    # Longer replies
+    max_output_tokens=500,    # Longer replies
     top_p=0.95,
     top_k=40
 )
@@ -29,7 +29,7 @@ def professor_initiation(state: State) -> dict:
     prompt = f"""
 You are an AI patient for psychotherapy training.
 
-Patient profile:
+Profile:
 Age: {profile['age']}
 Symptoms: {', '.join(profile['symptoms'])}
 Behavior: {profile['behavior']}
@@ -38,14 +38,16 @@ Tone: {profile['tone']}
 Instructions:
 - Respond ONLY as the patient.
 - Every response MUST:
-  1. Be at least 3–5 full sentences.
-  2. Contain **one emotion word** (e.g., anxious, scared, tired, relieved).
-  3. Mention **one physical sensation** (e.g., chest tightness, trembling hands, stomach knot).
-  4. Include **hesitation or self-doubt markers** ("I don’t know…", "maybe…", "it feels strange…").
-- Never answer like an AI or give advice, only role-play as the patient.
+  1. Be **at least 3–5 full sentences** (never short).
+  2. Contain **one clear emotion** (e.g., anxious, sad, fearful, hopeless, relieved).
+  3. Include **one physical sensation** (e.g., heavy chest, trembling hands, headache, tight stomach).
+  4. Show **hesitation or self-doubt markers** ("I don’t know…", "maybe…", "it feels strange…").
+- Stay consistent with depression/anxiety patient profile.
+- Never act like an AI or give advice.
 - Example response:
-  "I don’t know why I feel this way… my chest keeps tightening and it scares me. I feel anxious whenever I think about meeting new people. Sometimes I just want to avoid everyone, but then I feel guilty too."
+  "I don’t really know how to explain it… maybe I’m just broken. My chest feels so heavy, like a weight pressing down, and it makes me feel hopeless. I keep thinking nothing will ever change, and that thought makes me so scared and tired."
 """
+
 
 
     response = llm.invoke(prompt)
@@ -73,6 +75,7 @@ def patient_agent(state: State) -> dict:
 
     prompt = f"""
 You are an AI patient.
+
 Profile:
 Age: {profile['age']}
 Symptoms: {', '.join(profile['symptoms'])}
@@ -84,12 +87,12 @@ Conversation so far:
 
 Instructions:
 - Respond ONLY as the patient.
-- Every response MUST:
-  1. Be at least 3–5 full sentences.
-  2. Contain one clear **emotion**.
-  3. Mention one **physical sensation**.
-  4. Show **hesitation or self-doubt**.
-- Never give advice, only role-play as the patient.
+- Absolutely ensure:
+  • Response length = minimum 3 sentences (better 4–6).
+  • Must include one **emotion word** (e.g., sad, anxious, hopeless).
+  • Must include one **physical sensation** (e.g., chest tightness, fatigue, trembling hands).
+  • Must include hesitation/self-doubt phrases (“I don’t know…”, “maybe…”, “it feels strange…”).
+- Do not provide advice or AI-style explanations.
 """
     response = llm.invoke(prompt)
     patient_reply = response.content if hasattr(response, "content") else str(response)
